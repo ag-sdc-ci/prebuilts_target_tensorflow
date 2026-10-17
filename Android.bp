@@ -1,0 +1,316 @@
+// Auto-generated prebuilt APEX Blueprint for external/tensorflow
+// Staged from Extractive APEX package: ext-tensorflow (org.blisslabs.ag.ext.tensorflow)
+
+package {
+    default_applicable_licenses: ["external_tensorflow_license"],
+}
+
+license {
+    name: "external_tensorflow_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
+        "SPDX-license-identifier-BSD",
+        "SPDX-license-identifier-MIT",
+        "legacy_unencumbered",
+    ],
+    license_text: [
+        "LICENSE",
+        "NOTICE",
+    ],
+}
+
+cc_library_headers {
+    name: "tensorflow_headers",
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    vendor_available: true,
+    host_supported: true,
+    sdk_version: "current",
+    min_sdk_version: "apex_inherit",
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.extservices",
+        "com.android.neuralnetworks",
+        "test_com.android.neuralnetworks",
+        "com.android.adservices",
+        "com.android.ondevicepersonalization",
+    ],
+}
+
+genrule {
+    name: "libtflite_mutable_schema",
+    tools: ["flatc"],
+    cmd: "$(location flatc) --cpp --no-union-value-namespacing --gen-object-api --gen-mutable --keep-prefix -o $$(dirname $(out)) $(in)",
+    srcs: ["tensorflow/lite/schema/schema.fbs"],
+    out: ["tensorflow/lite/schema/mutable/schema_generated.h"],
+}
+
+cc_library_headers {
+    name: "libtflite_schema_headers",
+    generated_headers: [
+        "libtflite_mutable_schema",
+    ],
+    export_generated_headers: [
+        "libtflite_mutable_schema",
+    ],
+    sdk_version: "current",
+}
+
+filegroup {
+    name: "tensorflow_tsl_logging_srcs",
+    srcs: [
+        "tensorflow/tsl/platform/default/logging.cc",
+        "tensorflow/tsl/platform/default/env_time.cc",
+    ],
+}
+
+filegroup {
+    name: "tensorflowlite_jni_src",
+    srcs: ["tensorflow/lite/java/src/main/native/*.cc"],
+    visibility: [
+        "//packages/modules/OnDevicePersonalization:__subpackages__",
+    ],
+}
+
+cc_prebuilt_library_static {
+    name: "libtflite_static",
+    host_supported: true,
+    vendor_available: true,
+    sdk_version: "current",
+    min_sdk_version: "30",
+    srcs: ["lib/libtflite_static.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.extservices",
+        "com.android.adservices",
+        "com.android.neuralnetworks",
+    ],
+}
+
+cc_prebuilt_library_static {
+    name: "libtflite_context",
+    host_supported: true,
+    vendor_available: true,
+    sdk_version: "current",
+    min_sdk_version: "30",
+    srcs: ["lib/libtflite_static.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.adservices",
+        "com.android.extservices",
+    ],
+}
+
+cc_prebuilt_library_static {
+    name: "libtflite_framework",
+    host_supported: true,
+    vendor_available: true,
+    sdk_version: "current",
+    min_sdk_version: "30",
+    srcs: ["lib/libtflite_static.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.adservices",
+        "com.android.extservices",
+    ],
+}
+
+cc_prebuilt_library_static {
+    name: "libtflite_kernel_utils",
+    host_supported: true,
+    vendor_available: true,
+    sdk_version: "current",
+    min_sdk_version: "30",
+    srcs: ["lib/libtflite_static.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.neuralnetworks",
+    ],
+}
+
+cc_prebuilt_library_static {
+    name: "tflite_mutable_op_resolver",
+    host_supported: true,
+    vendor_available: true,
+    sdk_version: "current",
+    min_sdk_version: "30",
+    srcs: ["lib/libtflite_static.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    apex_available: [
+        "com.android.adservices",
+    ],
+}
+
+cc_prebuilt_library_static {
+    name: "libtflite_flex_delegate",
+    srcs: ["lib/libtflite_static.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "33",
+    apex_available: ["com.android.ondevicepersonalization"],
+}
+
+cc_prebuilt_library_static {
+    name: "tensorflow_core_proto_cpp_lite",
+    srcs: ["lib/libtensorflow_core_proto_cpp_lite.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "33",
+    apex_available: ["com.android.ondevicepersonalization"],
+}
+
+cc_prebuilt_library_static {
+    name: "tflite_configuration_proto",
+    srcs: ["lib/libtflite_configuration_proto.a"],
+    export_include_dirs: [
+        ".",
+        "include",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "30",
+    apex_available: [
+        "com.android.adservices",
+        "com.android.extservices",
+    ],
+}
+
+cc_prebuilt_library_shared {
+    name: "libtensorflowlite_jni",
+    srcs: ["lib/libtensorflowlite_jni.so"],
+    export_include_dirs: [
+        ".",
+        "include",
+        "tensorflow/lite/java/src/main/native",
+        "tensorflow/lite/delegates/nnapi/java/src/main/native",
+    ],
+    sdk_version: "current",
+    min_sdk_version: "30",
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.adservices",
+        "com.android.extservices",
+    ],
+}
+
+filegroup {
+    name: "tensorflow_core_protobuf_src",
+    srcs: [
+        "tensorflow/core/protobuf/bfc_memory_map.proto",
+        "tensorflow/core/protobuf/config.proto",
+        "tensorflow/core/protobuf/coordination_config.proto",
+        "tensorflow/core/protobuf/coordination_service.proto",
+        "tensorflow/core/protobuf/cluster.proto",
+        "tensorflow/core/protobuf/debug.proto",
+        "tensorflow/core/protobuf/device_filters.proto",
+        "tensorflow/core/protobuf/device_properties.proto",
+        "tensorflow/core/protobuf/data_service.proto",
+        "tensorflow/core/protobuf/debug_event.proto",
+        "tensorflow/core/protobuf/eager_service.proto",
+        "tensorflow/core/protobuf/graph_debug_info.proto",
+        "tensorflow/core/protobuf/queue_runner.proto",
+        "tensorflow/core/protobuf/rewriter_config.proto",
+        "tensorflow/core/protobuf/tensor_bundle.proto",
+        "tensorflow/core/protobuf/saver.proto",
+        "tensorflow/core/protobuf/verifier_config.proto",
+        "tensorflow/core/protobuf/error_codes.proto",
+        "tensorflow/core/protobuf/composite_tensor_variant.proto",
+        "tensorflow/core/protobuf/master.proto",
+        "tensorflow/core/protobuf/meta_graph.proto",
+        "tensorflow/core/protobuf/named_tensor.proto",
+        "tensorflow/core/protobuf/remote_tensor_handle.proto",
+        "tensorflow/core/protobuf/saved_model.proto",
+        "tensorflow/core/protobuf/saved_object_graph.proto",
+        "tensorflow/core/protobuf/status.proto",
+        "tensorflow/core/protobuf/struct.proto",
+        "tensorflow/core/protobuf/worker.proto",
+        "tensorflow/core/protobuf/tensorflow_server.proto",
+        "tensorflow/core/protobuf/trackable_object_graph.proto",
+        "tensorflow/core/protobuf/transport_options.proto",
+        "tensorflow/core/grappler/costs/op_performance_data.proto",
+        "tensorflow/compiler/xla/pjrt/distributed/protocol.proto",
+        "tensorflow/compiler/xla/stream_executor/dnn.proto",
+    ],
+}
+
+java_library_static {
+    name: "tensorflow_core_proto_java_lite",
+    srcs: [
+        "tensorflow/core/framework/*.proto",
+        "tensorflow/core/example/example.proto",
+        "tensorflow/core/example/feature.proto",
+        "tensorflow/core/example/example_parser_configuration.proto",
+        "tensorflow/core/profiler/protobuf/xplane.proto",
+        "tensorflow/core/profiler/profiler_options.proto",
+        "tensorflow/core/util/saved_tensor_slice.proto",
+        "tensorflow/core/util/event.proto",
+        ":tensorflow_core_protobuf_src",
+        ":libprotobuf-internal-protos",
+    ],
+    proto: {
+        canonical_path_from_root: false,
+        include_dirs: [
+            "external/protobuf/src",
+            "external/protobuf/java",
+        ],
+        type: "lite",
+    },
+    static_libs: ["libprotobuf-java-lite"],
+    sdk_version: "current",
+    min_sdk_version: "33",
+    apex_available: ["com.android.ondevicepersonalization"],
+}
+
+filegroup {
+    name: "tflite_nnapi_delegate_java",
+    srcs: [
+        "tensorflow/lite/delegates/nnapi/java/src/main/java/org/tensorflow/lite/nnapi/*.java",
+    ],
+}
+
+java_library_static {
+    name: "tensorflowlite_java",
+    sdk_version: "current",
+    min_sdk_version: "30",
+    libs: [
+        "android-support-annotations",
+        "guava-android-annotation-stubs",
+    ],
+    srcs: [
+        ":tflite_nnapi_delegate_java",
+        "tensorflow/lite/java/src/main/java/org/tensorflow/lite/**/*.java",
+    ],
+    apex_available: [
+        "//apex_available:platform",
+        "com.android.adservices",
+        "com.android.extservices",
+        "com.android.ondevicepersonalization",
+    ],
+}
